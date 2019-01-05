@@ -21,6 +21,9 @@
   },
   "homepage": "https://github.com/hunmix/movies-trailer#readme",
   "dependencies": {
-    "koa": "^2.6.2"
+    "koa": "^2.6.2",
+    "puppeteer": "^1.11.0",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.5"
   }
 }
