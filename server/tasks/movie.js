@@ -37,5 +37,4 @@ const Movie = mongoose.model('Movie')
       }
     })
   })
-  
 })()

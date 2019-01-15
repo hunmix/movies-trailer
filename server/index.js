@@ -9,8 +9,9 @@ console.log(connect)
 
   initSchemas()
 
-  require('./tasks/movie.js')
-  require('./tasks/api.js')
+  // require('./tasks/movie.js')
+  // require('./tasks/api.js')
+  require('./tasks/trailer.js')
 })()
 
 const app = new Koa()
