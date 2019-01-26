@@ -8,11 +8,12 @@ const Category = mongoose.model('Category')
   let movies = await Movie.find({
     $or: [
       {viedo: { $exists: false}},
-      {vedio: null},
-      {vedio: ''}
+      {video: null},
+      {video: ''}
     ]
   })
-  const script = resolve(__dirname, '../crawler/vedio')
+  const script = resolve(__dirname, '../crawler/video')
+  console.log(script)
   const child = cp.fork(script, [])
 
   let invoked = false
@@ -27,7 +28,7 @@ const Category = mongoose.model('Category')
 
   child.on('exit', code => {
     if (!invoked) return
-    invoked = false
+    invoked = true
     let err = code === 0 ? null : new Error(`exit code${code}`)
     
     console.log(err)
@@ -39,8 +40,8 @@ const Category = mongoose.model('Category')
       doubanId
     })
 
-    if (data.vedio) {
-      movie.vedio = data.vedio
+    if (data.video) {
+      movie.video = data.video
       movie.cover = data.cover
 
       await movie.save()
@@ -48,7 +49,20 @@ const Category = mongoose.model('Category')
       await movie.remove()
 
       let movieTypes = movie.movieTypes
+      for (let i = 0; i < movieTypes.length; i++) {
+        let type = movieTypes[i]
+        let cat = await Category.findOne({
+          name: type
+        })
 
+        if (cat && cat.movies) {
+          if (cat.movies.includes(movie._id)) {
+            let index = cat.movies.indexOf(movie._id)
+            cat.movies.splice(index, 1)
+          }
+          await cat.save()
+        }
+      }
       movieTypes.forEach(async type => {
         let cat = Category.findOne({
           name: type

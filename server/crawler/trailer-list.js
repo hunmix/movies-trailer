@@ -8,7 +8,7 @@ const clickMoreBtnTime = 1
   console.log('start visit the target page')
 
   const browser = await puppeteer.launch({
-    // headless: false
+    headless: false
   })
 
   const page = await browser.newPage()

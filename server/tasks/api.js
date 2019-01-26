@@ -49,12 +49,12 @@ async function fetchMovie (item) {
           })
 
           if (!cat) {
-            cat = new Catrgory({
+            cat = new Category({
               name: item,
               movies: [movie._id]
             })
           } else {
-            if (!cat.movies.include(movie.id)) {
+            if (!cat.movies.includes(movie.id)) {
               cat.movies.push(movie._id)
             }
           }
@@ -64,7 +64,7 @@ async function fetchMovie (item) {
           if (!movie.category) {
             movie.category.push(cat._id)
           } else {
-            if (!movie.category.include(cat._id)) {
+            if (!movie.category.includes(cat._id)) {
               movie.category.push(cat._id)
             }
           }

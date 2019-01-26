@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer')
 
 const baseUrl = 'https://movie.douban.com/subject/'
 // const doubanId = 27172911
-// const vedioBase = 'https://movie.douban.com/trailer/27172911/'}
+// const videoBase = 'https://movie.douban.com/trailer/27172911/'}
 
 process.on('message', async (movies) => {
   console.log('start visit the target page')
@@ -26,8 +26,13 @@ process.on('message', async (movies) => {
       if (it && it.length > 0) {
         const link = it.attr('href')
         const backgroundImg = it.css('background-image')
-        const cover = backgroundImg.match(/\((.+)\)/g)[0]
-  
+        const result = backgroundImg.match(/\(\"(.+)\"\)/)
+
+        let cover
+        if (result) {
+          cover = result[1]
+        }
+        console.log(cover)
         return {
           link,
           cover
@@ -36,7 +41,7 @@ process.on('message', async (movies) => {
       return {}
     })
     
-    let vedio
+    let video
     
     console.log(result)
     if (result.link) {
@@ -44,7 +49,7 @@ process.on('message', async (movies) => {
         waitUntil: 'networkidle2'
       })
   
-      vedio = await page.evaluate(() => {
+      video = await page.evaluate(() => {
         const $ = window.$
   
         let it = $('source')
@@ -57,7 +62,7 @@ process.on('message', async (movies) => {
     }
   
     const data = {
-      vedio,
+      video,
       doubanId,
       cover: result.cover
     }

@@ -16,7 +16,7 @@ const MovieSchema = new Schema({
   rate: Number,
   title: String,
   summary: String,
-  vedio: String,
+  video: String,
   poster: String,
   cover: String,
 

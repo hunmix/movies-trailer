@@ -11,7 +11,8 @@ console.log(connect)
 
   // require('./tasks/movie.js')
   // require('./tasks/api.js')
-  require('./tasks/trailer.js')
+  // require('./tasks/trailer.js')
+  require('./tasks/qiniu.js')
 })()
 
 const app = new Koa()
