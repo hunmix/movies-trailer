@@ -78,9 +78,9 @@ const Category = mongoose.model('Category')
       })
     }
   })
-  movies = movies.filter((movie, index) => {
-    return index < 5
-  })
+  // movies = movies.filter((movie, index) => {
+  //   return index < 5
+  // })
   // console.log(movies)
   child.send(movies)
 })()

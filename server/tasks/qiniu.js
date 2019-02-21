@@ -43,10 +43,11 @@ const updateToQiniu = async (url, key) => {
     ]
   })
 
-  console.log(movies)
+  // console.log(movies)
 
   for (let i = 0; i < movies.length; i++) {
     const movie = movies[i]
+    console.log('标题， vedio')
     console.log(movie.title, movie.video)
     if (movie.video && !movie.videoKey) {
       try {
@@ -71,7 +72,7 @@ const updateToQiniu = async (url, key) => {
         if (coverData.key) {
           movie.coverKey = coverData.key
         }
-        if (coverData.key) {
+        if (posterData.key) {
           movie.posterKey = posterData.key
         }
         await movie.save()
