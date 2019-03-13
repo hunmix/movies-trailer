@@ -1,0 +1,1 @@
+export const speak = str => (target, propety, discriptor) => {console.log(propety)}

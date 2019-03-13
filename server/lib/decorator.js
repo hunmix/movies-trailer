@@ -13,11 +13,10 @@ export class Route{
   }
   init () {
     glob.sync(resolve(this.apiPath, './**/*.js')).forEach(require)
-
     for (let [config, controller] of routerMap) {
       const controllers = toArray(controller)
       const method = config.method
-      const prefixPath = config.target[symbolKey]
+      let prefixPath = config.target[symbolKey]
       if (prefixPath) prefixPath = normalizePath(prefixPath)
       const path = config.path
       const routerPath = `${prefixPath}${path}`
@@ -32,36 +31,36 @@ const toArray = (controller) => Array.isArray(controller) ? controller : [contro
 const normalizePath = path => path.startsWith('/') ? path : `/${path}`
 
 const router = config => (target, key, desprictor) => {
-  config.path = normalizePath(config.path) 
+  config.path = normalizePath(config.path)
   routerMap.set({
     target: target,
     ...config
   }, target[key])
 }
-
-export const controller = (path) => target => {
-  target[symbolKey] = path
+export const controller = path => target => {
+  target.prototype[symbolKey] = path
 }
-export const get = (path) => router({
+
+export const get = path => router({
   method: 'get',
   path
 })
-export const post = (path) => router({
+export const post = path => router({
   method: 'post',
   path
 })
 
-export const put = (path) => router({
+export const put = path => router({
   method: 'put',
   path
 })
 
-export const del = (path) => router({
+export const del = path => router({
   method: 'delete',
   path
 })
 
-export const all = (path) => router({
+export const all = path => router({
   method: 'all',
   path
 })

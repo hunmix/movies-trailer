@@ -1,5 +1,5 @@
 const Koa = require('koa')
-const router = require('./router')
+const { router } = require('./middlewares/router')
 
 const { connect, initSchemas } = require('./db/init')
 
@@ -14,10 +14,9 @@ console.log(connect)
   // require('./tasks/api.js')
   // require('./tasks/trailer.js')
   // require('./tasks/qiniu.js')
+  const app = new Koa()
+  router(app)
+  app.listen(2018)
+
 })()
 
-const app = new Koa()
-
-app.use(router.routes()).use(router.allowedMethods())
-
-app.listen(2018)
