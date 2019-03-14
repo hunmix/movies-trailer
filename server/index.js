@@ -1,9 +1,21 @@
 const Koa = require('koa')
-const { router } = require('./middlewares/router')
 
 const { connect, initSchemas } = require('./db/init')
+const R = require('ramda')
+const MIDDLEWARES = ['router']
+const { resolve } = require('path')
 
-console.log(connect)
+const useMiddleWares = app => {
+  R.map(
+    R.compose(
+      R.forEachObjIndexed(
+        initWith => initWith(app)
+      ),
+      require,
+      name => resolve(__dirname, `./middlewares/${name}`)
+    )
+  )(MIDDLEWARES)
+}
 
 ;(async () => {
   await connect()
@@ -15,8 +27,8 @@ console.log(connect)
   // require('./tasks/trailer.js')
   // require('./tasks/qiniu.js')
   const app = new Koa()
-  router(app)
+  await useMiddleWares(app)
   app.listen(2018)
-
+  console.log('start on localhoset:2018')
 })()
 

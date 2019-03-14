@@ -1,12 +1,12 @@
-const mongoose = require('mongoose')
 const { controller, get } = require('../lib/decorator')
+const { getAllMovies, getMovieDetail, getRelativeMovies } = require('../service/movie')
 
 @controller('api/v0/movies')
 export class MovieController{
   @get('/')
   async getMovies (ctx, next) {
-    const Movie = mongoose.model('Movie')
-    const movies = await Movie.find({})
+    const { type, year } = ctx.query
+    const movies = await getAllMovies(type, year)
     ctx.body = {
       success: true,
       data: movies
@@ -14,12 +14,15 @@ export class MovieController{
   }
   @get('/:id')
   async getMovieDetail (ctx, next) {
-    const Movie = mongoose.model('Movie')
     const id = ctx.params.id
-    const movie = await Movie.findOne({_id: id})
+    const movie = await getMovieDetail(id)
+    const relativeMovies = await getRelativeMovies(movie)
     ctx.body = {
-      success: true,
-      data: movie
+      data: {
+        movie,
+        relativeMovies
+      },
+      success: true
     }
   }
 }
